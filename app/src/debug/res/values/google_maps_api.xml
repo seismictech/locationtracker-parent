@@ -1,0 +1,26 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=A1:54:E8:69:D5:F5:CD:B6:38:20:1A:19:82:3B:32:D2:C6:96:E7:CF%3Bcom.rizve.tina.locationtracker
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    A1:54:E8:69:D5:F5:CD:B6:38:20:1A:19:82:3B:32:D2:C6:96:E7:CF
+
+    SHA-1 certificate fingerprint:
+    A1:54:E8:69:D5:F5:CD:B6:38:20:1A:19:82:3B:32:D2:C6:96:E7:CF
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyDUHub9VNpjlul8QkkISvyxoYhznS7k13g
+    </string>
+</resources>

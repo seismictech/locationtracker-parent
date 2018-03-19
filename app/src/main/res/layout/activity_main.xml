@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.rizve.tina.locationtracker.MainActivity">
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello World from Location Tracker!" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="Get Location"
+        android:id="@+id/button"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Tracker" />
+
+    <Button
+        android:id="@+id/endButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="End Tracker" />
+
+    <TextView
+        android:id="@+id/locationString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+</LinearLayout>

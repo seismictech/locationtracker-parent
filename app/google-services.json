@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "345402373968",
+    "firebase_url": "https://locationtracker-69235.firebaseio.com",
+    "project_id": "locationtracker-69235",
+    "storage_bucket": "locationtracker-69235.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345402373968:android:1d1b9d8d883280a5",
+        "android_client_info": {
+          "package_name": "com.rizve.tina.locationtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345402373968-9qkkj9tlhfn221lrrb36km7podo3j2ch.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rizve.tina.locationtracker",
+            "certificate_hash": "a154e869d5f5cdb638201a19823b32d2c696e7cf"
+          }
+        },
+        {
+          "client_id": "345402373968-g5fbdumo7rlqgsd1irrfvukf8qsat2uf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNMDkPpQMCCsjICjnLUWEe0WdpGq0KzMk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345402373968-g5fbdumo7rlqgsd1irrfvukf8qsat2uf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
