@@ -1,4 +1,4 @@
-package com.rizve.tina.locationtracker;
+package com.seismic.tech.locationtracker;
 
 import android.app.Service;
 import android.content.Intent;
@@ -30,7 +30,7 @@ public class LocationService extends Service {
     private DatabaseReference database;
 
     private GPSTracker gpsTracker;
-    public static final long NOTIFY_INTERVAL = 5 * 1000; // 60s = 1 Minute
+    public static final long NOTIFY_INTERVAL = 5 * 60 * 1000; // 60s = 1 Minute
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
 
@@ -113,7 +113,7 @@ public class LocationService extends Service {
             HttpUrl.Builder httpBuilder = HttpUrl.parse(FIREBASE_CLOUD_FUNCTION_URL).newBuilder();
             httpBuilder.addQueryParameter("latitude",String.valueOf(latitude));
             httpBuilder.addQueryParameter("longitude",String.valueOf(longitude));
-            httpBuilder.addQueryParameter("name","rizve");
+            httpBuilder.addQueryParameter("name","seismic");
             Request request = new Request.Builder().url(httpBuilder.build()).build();
             //String responseString = "";
             httpClient.newCall(request).enqueue(new Callback()

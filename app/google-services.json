@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:345402373968:android:1d1b9d8d883280a5",
         "android_client_info": {
-          "package_name": "com.rizve.tina.locationtracker"
+          "package_name": "com.seismic.tech.locationtracker"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "345402373968-9qkkj9tlhfn221lrrb36km7podo3j2ch.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.rizve.tina.locationtracker",
+            "package_name": "com.seismic.tech.locationtracker",
             "certificate_hash": "a154e869d5f5cdb638201a19823b32d2c696e7cf"
           }
         },

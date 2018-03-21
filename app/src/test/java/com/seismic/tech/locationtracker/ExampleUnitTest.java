@@ -1,4 +1,4 @@
-package com.rizve.tina.locationtracker;
+package com.seismic.tech.locationtracker;
 
 import org.junit.Test;
 

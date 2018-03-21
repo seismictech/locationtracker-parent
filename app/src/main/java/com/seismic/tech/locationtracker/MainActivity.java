@@ -1,4 +1,4 @@
-package com.rizve.tina.locationtracker;
+package com.seismic.tech.locationtracker;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     {
         doAuthentication();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.seismic.tech.locationtracker.R.layout.activity_main);
         try
         {
             if(ActivityCompat.checkSelfPermission(this,mPermission)!= MockPackageManager.PERMISSION_GRANTED)
@@ -55,11 +54,11 @@ public class MainActivity extends AppCompatActivity
             ex.printStackTrace();
         }
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        button = (Button)findViewById(R.id.button);
-        startButton = (Button)findViewById(R.id.startButton);
-        endButton = (Button)findViewById(R.id.endButton);
-        locationString = (TextView)findViewById(R.id.locationString);
-        location = (TextView)findViewById(R.id.locationText);
+        button = (Button)findViewById(com.seismic.tech.locationtracker.R.id.button);
+        startButton = (Button)findViewById(com.seismic.tech.locationtracker.R.id.startButton);
+        endButton = (Button)findViewById(com.seismic.tech.locationtracker.R.id.endButton);
+        locationString = (TextView)findViewById(com.seismic.tech.locationtracker.R.id.locationString);
+        location = (TextView)findViewById(com.seismic.tech.locationtracker.R.id.locationText);
         gpsTracker = GPSTracker.getInstance(MainActivity.this);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity
         if(MySQLiteHelper.getInstance(this).isRegistered()==false)
         {
             final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.registration);
+            dialog.setContentView(com.seismic.tech.locationtracker.R.layout.registration);
             dialog.setTitle("Registration");
             dialog.setCanceledOnTouchOutside(false);
             dialog.setOnKeyListener(new DialogInterface.OnKeyListener()
@@ -166,11 +165,11 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            final EditText employeeId = (EditText)dialog.findViewById(R.id.EmployeeId);
-            final EditText password = (EditText)dialog.findViewById(R.id.password);
-            final EditText confirmPassword = (EditText)dialog.findViewById(R.id.confirm_password);
+            final EditText employeeId = (EditText)dialog.findViewById(com.seismic.tech.locationtracker.R.id.EmployeeId);
+            final EditText password = (EditText)dialog.findViewById(com.seismic.tech.locationtracker.R.id.password);
+            final EditText confirmPassword = (EditText)dialog.findViewById(com.seismic.tech.locationtracker.R.id.confirm_password);
 
-            Button okButton = (Button)dialog.findViewById(R.id.ok_button);
+            Button okButton = (Button)dialog.findViewById(com.seismic.tech.locationtracker.R.id.ok_button);
             okButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -286,7 +285,7 @@ public class MainActivity extends AppCompatActivity
         else
         {
             final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.login);
+            dialog.setContentView(com.seismic.tech.locationtracker.R.layout.login);
             dialog.setTitle("Login");
             dialog.setCanceledOnTouchOutside(false);
             dialog.setOnKeyListener(new DialogInterface.OnKeyListener()
@@ -303,8 +302,8 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            final EditText pin = (EditText)dialog.findViewById(R.id.password);
-            Button okButton = (Button)dialog.findViewById(R.id.ok_button);
+            final EditText pin = (EditText)dialog.findViewById(com.seismic.tech.locationtracker.R.id.password);
+            Button okButton = (Button)dialog.findViewById(com.seismic.tech.locationtracker.R.id.ok_button);
             okButton.setOnClickListener(new View.OnClickListener()
             {
                 @Override

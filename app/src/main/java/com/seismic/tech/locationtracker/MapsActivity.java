@@ -1,5 +1,6 @@
-package com.rizve.tina.locationtracker;
+package com.seismic.tech.locationtracker;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,10 +23,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(com.seismic.tech.locationtracker.R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(com.seismic.tech.locationtracker.R.id.map);
         mapFragment.getMapAsync(this);
         array = getIntent().getStringArrayListExtra("positions");
     }
@@ -44,16 +46,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         String[] parts;
         double latitude,longitude;
+        String timestamp;
         Random rand = new Random();
-        // Add a marker in Sydney and move the camera
-        for(int i=0;(i<3) && (i<array.size());i++)
+        PolylineOptions rectOptions = new PolylineOptions();
+        rectOptions.color(Color.argb(255, 85, 166, 27));
+        for(int i=0;i<array.size();i++)
         {
-            parts = array.get(0).split("~");
+            parts = array.get(i).split("~");
+            timestamp = parts[0];
             latitude = Double.parseDouble(parts[1]);
             longitude = Double.parseDouble(parts[2]);
-            LatLng sydney = new LatLng(latitude + rand.nextInt(3), longitude + rand.nextInt(3));
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            //LatLng sydney = new LatLng(latitude + rand.nextInt(3), longitude + rand.nextInt(3));
+            LatLng sydney = new LatLng(latitude, longitude);
+            mMap.addMarker(new MarkerOptions().position(sydney).title(timestamp));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            rectOptions.add(sydney);
         }
+        mMap.addPolyline(rectOptions);
     }
 }
