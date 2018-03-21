@@ -59,7 +59,6 @@ public class LocationService extends Service {
         }
         gpsTracker = GPSTracker.getInstance(getApplicationContext());
         database = FirebaseDatabase.getInstance().getReference();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, NOTIFY_INTERVAL);
     }
     @Override
@@ -81,7 +80,8 @@ public class LocationService extends Service {
                     location = gpsTracker.getLocation();
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    addLocation(latitude,longitude,"rizve");
+                    MySQLiteHelper.getInstance(getApplicationContext()).addLocations(latitude,longitude);
+                    addLocation(latitude,longitude,MySQLiteHelper.getInstance(getApplicationContext()).getUserId());
                     Toast.makeText(getApplicationContext(), latitude+"::"+longitude,Toast.LENGTH_SHORT).show();
                     //sendLatLongToServer(latitude,longitude);
                     Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
@@ -101,7 +101,7 @@ public class LocationService extends Service {
         }
         private void addLocation(double latitude, double longitude, String name)
         {
-            String key = database.child("location").push().getKey();
+            String key = database.child("locations").push().getKey();
             Map<String, Object> postValues = locToMap(latitude,longitude,name);
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/locations/" + key, postValues);
