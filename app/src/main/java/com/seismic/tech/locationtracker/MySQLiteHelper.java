@@ -1,4 +1,4 @@
-package com.rizve.tina.locationtracker;
+package com.seismic.tech.locationtracker;
 
 /**
  * Created by lislam on 3/19/18.

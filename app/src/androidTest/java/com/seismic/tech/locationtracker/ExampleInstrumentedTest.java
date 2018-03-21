@@ -1,4 +1,4 @@
-package com.rizve.tina.locationtracker;
+package com.seismic.tech.locationtracker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.rizve.tina.locationtracker", appContext.getPackageName());
+        assertEquals("com.seismic.tech.locationtracker", appContext.getPackageName());
     }
 }
