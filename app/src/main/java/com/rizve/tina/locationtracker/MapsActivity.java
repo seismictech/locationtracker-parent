@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,13 +42,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        String[] parts;
+        double latitude,longitude;
+        Random rand = new Random();
         // Add a marker in Sydney and move the camera
-        String[] parts = array.get(0).split(",");
-        double latitude = Double.parseDouble(parts[1]);
-        double longitude = Double.parseDouble(parts[2]);
-        LatLng sydney = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        for(int i=0;(i<3) && (i<array.size());i++)
+        {
+            parts = array.get(0).split("~");
+            latitude = Double.parseDouble(parts[1]);
+            longitude = Double.parseDouble(parts[2]);
+            LatLng sydney = new LatLng(latitude + rand.nextInt(3), longitude + rand.nextInt(3));
+            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        }
     }
 }
