@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.seismic.tech.locationtracker"
-        minSdkVersion 15
+        minSdkVersion 9
         targetSdkVersion 16
         versionCode 1
         versionName "1.0"
