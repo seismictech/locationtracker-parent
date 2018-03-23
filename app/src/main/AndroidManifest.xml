@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <uses-library android:name="com.google.android.maps" />
         <service
             android:name="com.seismic.tech.locationtracker.LocationService"
             android:enabled="true"

@@ -8,7 +8,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -23,10 +26,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(com.seismic.tech.locationtracker.R.layout.activity_maps);
+        setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(com.seismic.tech.locationtracker.R.id.map);
+                .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         array = getIntent().getStringArrayListExtra("positions");
     }
@@ -47,18 +50,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String[] parts;
         double latitude,longitude;
         String timestamp;
+        /*LatLng sydney = new LatLng(37,122);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker at Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
         Random rand = new Random();
         PolylineOptions rectOptions = new PolylineOptions();
         rectOptions.color(Color.argb(255, 85, 166, 27));
+
         for(int i=0;i<array.size();i++)
         {
             parts = array.get(i).split("~");
             timestamp = parts[0];
             latitude = Double.parseDouble(parts[1]);
             longitude = Double.parseDouble(parts[2]);
-            //LatLng sydney = new LatLng(latitude + rand.nextInt(3), longitude + rand.nextInt(3));
-            LatLng sydney = new LatLng(latitude, longitude);
-            mMap.addMarker(new MarkerOptions().position(sydney).title(timestamp));
+            LatLng sydney = new LatLng((latitude + rand.nextInt(101))/100.0, (longitude + rand.nextInt(101))/100.0);
+            //LatLng sydney = new LatLng(latitude, longitude);
+            MarkerOptions marker = new MarkerOptions().position(sydney).title(timestamp);
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school32));
+            mMap.addMarker(marker);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             rectOptions.add(sydney);
         }
