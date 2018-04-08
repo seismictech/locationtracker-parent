@@ -8,7 +8,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import android.util.Log;
+
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -125,7 +128,70 @@ public class MySQLiteHelper extends SQLiteOpenHelper
             e.printStackTrace();
         }
     }
+    public double getDistanceTravelled()
+    {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        ArrayList<location> locations = new ArrayList<>();
+        double distance = 0;
+        try
+        {
+            db = getReadableDatabase();
+            cursor = db.rawQuery("select * from Trip",null);
+            while (cursor.moveToNext())
+            {
+                locations.add(new location(cursor.getString(0),Double.parseDouble(cursor.getString(1)),Double.parseDouble(cursor.getString(2))));
+            }
+            for(int i=1;i<locations.size();i++)
+            {
+                distance += getDistance(locations.get(i),locations.get(i-1));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return distance;
+    }
+    private double getDistance(location loc1,location loc2)
+    {
+        double lon1,lon2,lat1,lat2;
+        lat1 = loc1.latitude;
+        lon1 = loc1.longitude;
+        lat2 = loc2.latitude;
+        lon2 = loc2.longitude;
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
 
+    private double deg2rad(double deg)
+    {
+        return (deg * Math.PI / 180.0);
+    }
+    private double rad2deg(double rad)
+    {
+        return (rad * 180.0 / Math.PI);
+    }
+    private class location
+    {
+        String timestamp;
+        double latitude;
+        double longitude;
+        location(String timestamp,double latitude,double longitude)
+        {
+            this.timestamp = timestamp;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+    }
     public ArrayList<String> getTrip()
     {
         SQLiteDatabase db = null;

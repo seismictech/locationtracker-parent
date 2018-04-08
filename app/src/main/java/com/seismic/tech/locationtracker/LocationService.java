@@ -30,7 +30,7 @@ public class LocationService extends Service {
     private DatabaseReference database;
 
     private GPSTracker gpsTracker;
-    public static final long NOTIFY_INTERVAL = 5 * 1000; // 60s = 1 Minute
+    public static final long NOTIFY_INTERVAL = 1 * 60 * 1000; // 60s = 1 Minute
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
 

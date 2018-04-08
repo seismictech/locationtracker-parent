@@ -8,10 +8,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -63,8 +61,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             timestamp = parts[0];
             latitude = Double.parseDouble(parts[1]);
             longitude = Double.parseDouble(parts[2]);
-            LatLng sydney = new LatLng((latitude + rand.nextInt(101))/100.0, (longitude + rand.nextInt(101))/100.0);
-            //LatLng sydney = new LatLng(latitude, longitude);
+            //LatLng sydney = new LatLng((latitude + rand.nextInt(101))/100.0, (longitude + rand.nextInt(101))/100.0);
+            LatLng sydney = new LatLng(latitude, longitude);
             MarkerOptions marker = new MarkerOptions().position(sydney).title(timestamp);
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school32));
             mMap.addMarker(marker);

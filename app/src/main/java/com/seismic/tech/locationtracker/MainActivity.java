@@ -79,29 +79,29 @@ public class MainActivity extends AppCompatActivity
         });
         Calendar c = Calendar.getInstance();
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver()
-                {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        double latitude = intent.getDoubleExtra(LocationService.LATITUDE, 0);
-                        double longitude = intent.getDoubleExtra(LocationService.LONGITUDE, 0);
-                        String text = locationString.getText().toString();
+                                                                 {
+                                                                     @Override
+                                                                     public void onReceive(Context context, Intent intent) {
+                                                                         double latitude = intent.getDoubleExtra(LocationService.LATITUDE, 0);
+                                                                         double longitude = intent.getDoubleExtra(LocationService.LONGITUDE, 0);
+                                                                         String text = locationString.getText().toString();
 
-                        Date dt = new Date();
-                        int hours = dt.getHours();
-                        int minutes = dt.getMinutes();
-                        int seconds = dt.getSeconds();
-                        String curTime = hours + ":" + minutes + ":" + seconds;
-                        if(text.length()>1000)
-                        {
-                            text = curTime+"," + latitude + "," + longitude + "\n";
-                        }
-                        else
-                        {
-                            text = curTime+"," + latitude + "," + longitude + "\n" + text;
-                        }
-                        locationString.setText(text);
-                    }
-                }, new IntentFilter(LocationService.ACTION_LOCATION_BROADCAST)
+                                                                         Date dt = new Date();
+                                                                         int hours = dt.getHours();
+                                                                         int minutes = dt.getMinutes();
+                                                                         int seconds = dt.getSeconds();
+                                                                         String curTime = hours + ":" + minutes + ":" + seconds;
+                                                                         if(text.length()>1000)
+                                                                         {
+                                                                             text = curTime+"," + latitude + "," + longitude + "\n";
+                                                                         }
+                                                                         else
+                                                                         {
+                                                                             text = curTime+"," + latitude + "," + longitude + "\n" + text;
+                                                                         }
+                                                                         locationString.setText(text);
+                                                                     }
+                                                                 }, new IntentFilter(LocationService.ACTION_LOCATION_BROADCAST)
         );
         startButton.setOnClickListener(new View.OnClickListener()
         {
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity
                 stopService(new Intent(MainActivity.this,LocationService.class));
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                alertDialog.setTitle("Trip Complete");
+                alertDialog.setTitle("Trip Complete; Distance Travelled: "+MySQLiteHelper.getInstance(MainActivity.this).getDistanceTravelled());
                 alertDialog.setMessage("Do you want to see your trip on the map?");
                 alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -271,7 +271,6 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                // TODO Auto-generated method stub
                                 dialog.cancel();
                             }
                         });
