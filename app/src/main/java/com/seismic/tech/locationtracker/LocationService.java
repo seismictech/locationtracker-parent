@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,7 +29,7 @@ public class LocationService extends Service {
     private DatabaseReference database;
 
     private GPSTracker gpsTracker;
-    public static final long NOTIFY_INTERVAL = 1 * 60 * 1000; // 60s = 1 Minute
+    public static final long NOTIFY_INTERVAL = HomeActivity.interval * 60 * 1000; // in milliseconds
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
 
@@ -82,12 +81,12 @@ public class LocationService extends Service {
                     double longitude = location.getLongitude();
                     MySQLiteHelper.getInstance(getApplicationContext()).addLocations(latitude,longitude);
                     addLocation(latitude,longitude,MySQLiteHelper.getInstance(getApplicationContext()).getUserId());
-                    Toast.makeText(getApplicationContext(), latitude+"::"+longitude,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), latitude+"::"+longitude,Toast.LENGTH_SHORT).show();
                     //sendLatLongToServer(latitude,longitude);
                     Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
                     intent.putExtra(LATITUDE, location.getLatitude());
                     intent.putExtra(LONGITUDE, location.getLongitude());
-                    LocalBroadcastManager.getInstance(LocationService.this).sendBroadcast(intent);
+                    //LocalBroadcastManager.getInstance(LocationService.this).sendBroadcast(intent);
                 }
             });
         }

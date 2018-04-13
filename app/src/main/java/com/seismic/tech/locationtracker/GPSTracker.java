@@ -29,7 +29,7 @@ public class GPSTracker extends Service implements LocationListener
     Location location;
     double latitude,longitude;
     private static final long MIN_DISTANCE_FOR_UPDATES = 0;
-    private static final long MIN_TIME_BETWEEN_UPDATES = 1000*60*1; // 1 minute
+    private static final long MIN_TIME_BETWEEN_UPDATES = 1000*60*HomeActivity.interval; // in milliseconds
     private static GPSTracker gpsTracker = null;
     public static GPSTracker getInstance(Context context)
     {

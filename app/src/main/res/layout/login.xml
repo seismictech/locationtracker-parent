@@ -30,6 +30,7 @@
                 android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:text="a123"
                 android:background="@drawable/textview_shape"
                 android:inputType="textPassword" />
         </LinearLayout>
@@ -44,7 +45,7 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
             android:text="OK"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
