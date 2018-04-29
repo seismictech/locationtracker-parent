@@ -1,96 +1,82 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.seismic.tech.locationtracker.MainActivity"
-    tools:ignore="HardcodedText" >
-    <LinearLayout
-        android:id="@+id/wr_1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:orientation="vertical" >
-        <LinearLayout
-            android:id="@+id/EmployeeId_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:weightSum="1">
-            <TextView
-                android:id="@+id/EmployeeId_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Id                     "
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp">
 
-            <EditText
-                android:id="@+id/EmployeeId"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/textview_shape"
-                android:hint="Enter UserId"
-                android:inputType="text"
-                android:maxLength="8" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/password_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
-            <TextView
-                android:id="@+id/password_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Password       "
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:maxLength="4"
-                android:inputType="textPassword"
-                android:background="@drawable/textview_shape" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/confirm_password_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
-            <TextView
-                android:id="@+id/confirm_password_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm Password "
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <EditText
-                android:id="@+id/confirm_password"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:maxLength="4"
-                android:background="@drawable/textview_shape"
-                android:inputType="textPassword" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/wr_2"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="79dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical" >
+        android:layout_above="@+id/password"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:text="UserId"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <EditText
+        android:id="@+id/EmployeeId"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/textview_shape"
+        android:hint="Enter UserId"
+        android:inputType="text"
+        android:maxLength="8" />
 
-        <Button
-            android:id="@+id/ok_button"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginTop="15dp"
-            android:text="Register"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginTop="25dp"
+        android:text="New PassCode" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_marginRight="2dp"
+        android:inputType="textPassword"
+        android:background="@drawable/textview_shape"
+        android:maxLength="4" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView2"
+        android:text="Confirm PassCode"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/confirm_password"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/textview_shape"
+        android:inputType="textPassword"
+        android:maxLength="4" />
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:text="Register" />
+</RelativeLayout>

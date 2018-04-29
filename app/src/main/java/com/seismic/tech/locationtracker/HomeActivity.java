@@ -22,11 +22,6 @@ import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener
 {
     ImageView startImage;
@@ -40,6 +35,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Handler mHandler;
     private Runnable mUpdateTimeTask;
     private long counter = 0;
+    private FirebaseDatabase database;
+    private String userName;
     public static int interval;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,8 +44,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         doAuthentication();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        interval = Integer.valueOf(getResources().getString(R.string.interval));
+        interval = Integer.valueOf("1");
+        userName = MySQLiteHelper.getInstance(getApplicationContext()).getUserId();
         isTripGoingOn = false;
         startImage = (ImageView) findViewById(R.id.startId);
         endImage = (ImageView) findViewById(R.id.endId);
@@ -84,6 +81,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     {
         if(MySQLiteHelper.getInstance(this).isRegistered()==false)
         {
+            database = FirebaseDatabase.getInstance();
+            database.setPersistenceEnabled(true);
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.registration);
             dialog.setTitle("Registration");
@@ -216,6 +215,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         else
         {
+            database = FirebaseDatabase.getInstance();
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.login);
             dialog.setTitle("Login");
@@ -270,34 +270,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    /*@Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        counter = savedInstanceState.getLong("counter");
-        isTripGoingOn = savedInstanceState.getBoolean("isTripGoingOn");
-        System.out.println("On Restored");
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestart()
-    {
-        super.onRestart();
-        System.out.println("retrieved "+ counter + " " + isTripGoingOn);
-        System.out.println("Lisul Islam We are on restart");
-    }*/
-
     @Override
     public void onPause()
     {
         super.onPause();
-        /*
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong("counter", counter);
-        editor.putBoolean("isTripGoingOn", isTripGoingOn);
-        editor.putLong("current",System.currentTimeMillis());
-        editor.commit();*/
     }
 
 
@@ -305,17 +281,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onRestart()
     {
         super.onRestart();
-        /*
-        System.out.println("Lisul Islam We are on resume");
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        counter = preferences.getLong("counter", 0L);
-        isTripGoingOn = preferences.getBoolean("isTripGoingOn",false);
-        counter += (System.currentTimeMillis()-preferences.getLong("current",System.currentTimeMillis()));
-        isTripGoingOn = true;
-        startImage.setImageResource(R.drawable.pause);
-        getStartText.setText("Started");
-        mHandler.post(mUpdateTimeTask);
-        startText.setTypeface(null, Typeface.BOLD);*/
     }
 
     @Override
@@ -341,14 +306,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     alertDialog.setMessage("You are already in a trip now. Do you want to see your current trip on the map?");
                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            /*Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
-                            ArrayList<String> array = MySQLiteHelper.getInstance(HomeActivity.this).getTrip();
-                            for(String s:array)
-                            {
-                                System.out.println(s);
-                            }
-                            intent.putStringArrayListExtra("positions", array);
-                            startActivity(intent);*/
                             dialog.cancel();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -357,38 +314,55 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
                     alertDialog.show();
-
                 }
                 break;
             case R.id.endId:
-                startImage.setImageResource(R.drawable.start2);
-                startText.setText("Start Trip");
-                getStartText.setText("Start");
-                isTripGoingOn = false;
-                startText.setTypeface(null, Typeface.NORMAL);
-                mHandler.removeCallbacks(mUpdateTimeTask);
-                stopService(new Intent(HomeActivity.this,LocationService.class));
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
-                final Trip currentTrip = MySQLiteHelper.getInstance(HomeActivity.this).getAndSaveTrip();
-                alertDialog.setTitle("Trip Completed");
-                alertDialog.setMessage("Distance Travelled: " + currentTrip.distance + ". Do you want to see your trip on the map?");
-                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
-                        intent.putExtra("distance",currentTrip.distance);
-                        intent.putStringArrayListExtra("positions", currentTrip.positions);
-                        intent.putExtra("time",currentTrip.time);
-                        startActivity(intent);
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                alertDialog.show();
+                if(isTripGoingOn==true)
+                {
+                    isTripGoingOn = false;
+                    startImage.setImageResource(R.drawable.start2);
+                    startText.setText("Start Trip");
+                    getStartText.setText("Start");
+                    isTripGoingOn = false;
+                    startText.setTypeface(null, Typeface.NORMAL);
+                    mHandler.removeCallbacks(mUpdateTimeTask);
+                    stopService(new Intent(HomeActivity.this, LocationService.class));
+                    database.getReference().child("/livelocations/"+userName).removeValue();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                    final Trip currentTrip = MySQLiteHelper.getInstance(HomeActivity.this).getAndSaveTrip();
+                    alertDialog.setTitle("Trip Completed");
+                    alertDialog.setMessage("Distance Travelled: " + currentTrip.distanceTravelled + ". Do you want to see your trip on the map?");
+                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+                            intent.putExtra("distance", currentTrip.distanceTravelled);
+                            intent.putStringArrayListExtra("positions", currentTrip.positions);
+                            intent.putExtra("time", currentTrip.timeSpent);
+                            intent.putExtra("activity", "HomeActivity");
+
+                            startActivity(intent);
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    alertDialog.show();
+                }
+                else
+                {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeActivity.this);
+                    alertDialog.setTitle("Invalid");
+                    alertDialog.setMessage("You are currently not on any trip");
+                    alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    alertDialog.show();
+                }
                 break;
             case R.id.viewId:
-                Toast.makeText(HomeActivity.this, "View Trips",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this,ViewTripsActivity.class);
                 startActivity(intent);
                 break;

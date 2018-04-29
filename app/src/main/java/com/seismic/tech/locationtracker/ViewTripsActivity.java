@@ -1,5 +1,10 @@
 package com.seismic.tech.locationtracker;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +12,7 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class ViewTripsActivity extends AppCompatActivity
@@ -30,10 +36,45 @@ public class ViewTripsActivity extends AppCompatActivity
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
             {
-                Trip trip = trips.get(keys.get(groupPosition)).get(childPosition);
-                Toast.makeText(ViewTripsActivity.this,trip.distance+" "+trip.time,Toast.LENGTH_SHORT).show();
+                final Trip trip = trips.get(keys.get(groupPosition)).get(childPosition);
+                final Context context = ViewTripsActivity.this;
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setTitle(keys.get(groupPosition));
+                alertDialog.setMessage("Distance Travelled: " + trip.distanceTravelled + " meter\nTime Spent: " + trip.timeSpent + " minute\n"
+                        + "Do you want to see this trip on the map?");
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(context, MapsActivity.class);
+                        intent.putExtra("distance", trip.distanceTravelled);
+                        ArrayList<String> array = new ArrayList<>(Arrays.asList(trip.positionString.split("\\+")));
+                        intent.putStringArrayListExtra("positions", array);
+                        intent.putExtra("time", trip.timeSpent);
+                        intent.putExtra("activity","ViewTripsActivity");
+                        startActivityForResult(intent,1);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertDialog.show();
                 return false;
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 1)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+
+            }
+            else if (resultCode == Activity.RESULT_CANCELED)
+            {
+
+            }
+        }
     }
 }

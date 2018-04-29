@@ -22,11 +22,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper
     private static MySQLiteHelper instance;
     private static Context context;
     private static final String DATABASE_NAME = "locationtracker.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 10;
 
     private static final String createUserTable = "CREATE TABLE UserInfo ( _id TEXT PRIMARY KEY, password TEXT )";
     private static final String createTripTable = "CREATE TABLE Trip ( timestamp INTEGER, latitude REAL, longitude REAL )";
-    private static final String createPastTripsTable = "CREATE TABLE PastTrips ( _id INT PRIMARY KEY, trip TEXT, distance REAL, time INTEGER, tripDateTime INTEGER )";
+    private static final String createPastTripsTable = "CREATE TABLE PastTrips ( _id INT PRIMARY KEY, trip TEXT, distance REAL, time INTEGER, startTime INTEGER, endTime INTEGER )";
 
     public MySQLiteHelper(Context context)
     {
@@ -169,27 +169,24 @@ public class MySQLiteHelper extends SQLiteOpenHelper
         {
             db = getReadableDatabase();
             cursor = db.rawQuery("select * from PastTrips",null);
-            if(cursor.moveToFirst())
+            while (cursor.moveToNext())
             {
-                while (cursor.moveToNext())
+                Trip trip = new Trip();
+                trip.positionString = cursor.getString(cursor.getColumnIndex("trip"));
+                trip.distanceTravelled = cursor.getDouble(cursor.getColumnIndex("distance"));
+                trip.timeSpent = cursor.getInt(cursor.getColumnIndex("time"));
+                trip.startTime = cursor.getLong(cursor.getColumnIndex("startTime"));
+                trip.endTime = cursor.getLong(cursor.getColumnIndex("endTime"));
+                String dateTime = SimpleDateFormat.getDateTimeInstance().format(new Date(trip.startTime)).substring(0,12);
+                if(hashmap.containsKey(dateTime)==true)
                 {
-                    Trip trip = new Trip();
-                    trip.position = cursor.getString(cursor.getColumnIndex("trip"));
-                    trip.distance = cursor.getDouble(cursor.getColumnIndex("distance"));
-                    trip.time = cursor.getInt(cursor.getColumnIndex("time"));
-                    trip.startTime = cursor.getLong(cursor.getColumnIndex("tripDateTime"));
-                    String dateTime = SimpleDateFormat.getDateTimeInstance().format(new Date(trip.startTime)).substring(0,12);
-                    System.out.println(dateTime);
-                    if(hashmap.containsKey(dateTime)==true)
-                    {
-                        hashmap.get(dateTime).add(trip);
-                    }
-                    else
-                    {
-                        ArrayList<Trip> trips = new ArrayList<>();
-                        trips.add(trip);
-                        hashmap.put(dateTime,trips);
-                    }
+                    hashmap.get(dateTime).add(trip);
+                }
+                else
+                {
+                    ArrayList<Trip> trips = new ArrayList<>();
+                    trips.add(trip);
+                    hashmap.put(dateTime,trips);
                 }
             }
         }
@@ -223,7 +220,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper
         double distance = 0.0;
         Cursor cursor = null;
         int counter;
-        String currentDateTimeString = null;
+        String startTimeString = null,endTimeString=null;
         ArrayList<String> positions = new ArrayList<>();
         ArrayList<location> locations = new ArrayList<>();
         try
@@ -239,8 +236,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper
                     positions.add(cursor.getString(0)+"~"+cursor.getString(1)+"~"+cursor.getString(2));
                     if(counter==0)
                     {
-                        currentDateTimeString = cursor.getString(0);
+                        startTimeString = cursor.getString(0);
                     }
+                    endTimeString = cursor.getString(0);
                     counter++;
                     strBuff.append(positions.get(positions.size()-1)+"+");
                     locations.add(new location(cursor.getString(0),Double.parseDouble(cursor.getString(1)),Double.parseDouble(cursor.getString(2))));
@@ -249,15 +247,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper
                 {
                     distance += getDistance(locations.get(i),locations.get(i-1));
                 }
-                currentTrip.positions = positions;
-                currentTrip.distance = distance;
-                currentTrip.time = (locations.size()-1)*HomeActivity.interval;
-                ContentValues values = new ContentValues();
                 strBuff.deleteCharAt(strBuff.length()-1);
+
+                currentTrip.distanceTravelled = distance;
+                currentTrip.timeSpent = (locations.size()-1)*HomeActivity.interval;
+                currentTrip.positions = positions;
+                currentTrip.startTime = Long.parseLong(startTimeString);
+                currentTrip.endTime = Long.parseLong(endTimeString);
+                currentTrip.positionString = strBuff.toString();
+
+                ContentValues values = new ContentValues();
                 values.put("trip",strBuff.toString());
-                values.put("distance", currentTrip.distance);
-                values.put("time",currentTrip.time);
-                values.put("tripDateTime",Long.parseLong(currentDateTimeString));
+                values.put("distance", currentTrip.distanceTravelled);
+                values.put("time",currentTrip.timeSpent);
+                values.put("startTime",Long.parseLong(startTimeString));
+                values.put("endTime",Long.parseLong(endTimeString));
                 db.insert("PastTrips",null,values);
             }
         }

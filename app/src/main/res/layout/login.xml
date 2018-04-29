@@ -1,52 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.seismic.tech.locationtracker.MainActivity"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    tools:context="com.seismic.tech.locationtracker.HomeActivity"
     tools:ignore="HardcodedText" >
-    <LinearLayout
-        android:id="@+id/wr_1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:orientation="vertical" >
-        <LinearLayout
-            android:id="@+id/Pin_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
-            <TextView
-                android:id="@+id/Pin_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Enter Password  "
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="115dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="a123"
-                android:background="@drawable/textview_shape"
-                android:inputType="textPassword" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/wr_2"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/Pin_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical" >
-        <Button
-            android:id="@+id/ok_button"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginBottom="5dp"
-            android:text="OK"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-</LinearLayout>
+        android:text="Enter PassCode"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/Pin_text"
+        android:layout_marginRight="20dp"
+        android:maxLength="4"
+        android:background="@drawable/textview_shape"
+        android:inputType="textPassword"
+        android:text="a123" />
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="OK"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>

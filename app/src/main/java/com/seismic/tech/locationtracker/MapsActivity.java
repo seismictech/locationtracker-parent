@@ -2,8 +2,9 @@ package com.seismic.tech.locationtracker;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,7 +18,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -25,6 +25,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<String> positions;
     double distance;
     int timespent;
+    String parentActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -33,13 +34,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         positions = getIntent().getStringArrayListExtra("positions");
         distance = getIntent().getDoubleExtra("distance",0.0);
         timespent = getIntent().getIntExtra("time",0);
+        parentActivity = getIntent().getStringExtra("activity");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(String.format("Distance = %.2f  and Time = %d minute",distance,timespent));
+        getSupportActionBar().setTitle("");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                if(parentActivity.equals("HomeActivity"))
+                    NavUtils.navigateUpFromSameTask(this);
+                else if(parentActivity.equals("ViewTripsActivity"))
+                    finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -59,10 +74,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         double latitude,longitude;
         String timestamp;
         long ct;
-        /*LatLng sydney = new LatLng(37,122);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker at Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
-        //Random rand = new Random();
         PolylineOptions rectOptions = new PolylineOptions();
         rectOptions.color(Color.argb(255, 85, 166, 27));
         LatLng sydney = null;
@@ -74,7 +85,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             timestamp = SimpleDateFormat.getDateTimeInstance().format(new Date(ct));
             latitude = Double.parseDouble(parts[1]);
             longitude = Double.parseDouble(parts[2]);
-            //LatLng sydney = new LatLng((latitude + rand.nextInt(101))/100.0, (longitude + rand.nextInt(101))/100.0);
             sydney = new LatLng(latitude, longitude);
             MarkerOptions marker = new MarkerOptions().position(sydney).title(timestamp);
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.school32));
