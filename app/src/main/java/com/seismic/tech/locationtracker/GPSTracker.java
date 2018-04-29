@@ -54,7 +54,20 @@ public class GPSTracker extends Service implements LocationListener
             isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             if(!isGPSEnabled && !isNetworkEnabled)
             {
-
+                AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                alert.setTitle("Warning");
+                alert.setMessage("You need to enable GPS or be connected to network provider(Wifi/Mobile Data)");
+                alert.setCancelable(true);
+                alert.setNegativeButton("Ok",new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.cancel();
+                        System.exit(0);
+                    }
+                });
+                alert.show();
             }
             else
             {

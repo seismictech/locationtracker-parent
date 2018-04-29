@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3285E9</color>
-    <color name="colorPrimaryDark">#32A5D0</color>
+    <color name="colorPrimary">#376399</color>
+    <color name="colorPrimaryDark">#4c84c7</color>
     <color name="colorAccent">#FF4081</color>
     <color name="textview_border_color">#838383</color>
     <color name="cyan_blue">#33B5E5</color>
@@ -16,4 +16,5 @@
     <color name="testcolorblue">#152b38</color>
     <color name="pink">#fe104d</color>
     <color name="black_overlay">#66000000</color>
+    <color name="favcolor">#32A5D0</color>
 </resources>

@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 public class Trip
 {
-    double distance;
-    int time;
+    double distanceTravelled;
+    int timeSpent;
     ArrayList<String> positions;
     long startTime;
-    String position;
+    long endTime;
+    String positionString;
 }

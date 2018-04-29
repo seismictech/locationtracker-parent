@@ -1,17 +1,23 @@
 package com.seismic.tech.locationtracker;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
-public class ViewTripsAdapter extends BaseExpandableListAdapter {
+public class ViewTripsAdapter extends BaseExpandableListAdapter
+{
     private Context context;
     private HashMap<String,ArrayList<Trip>> map;
     ArrayList<String> keys;
@@ -65,23 +71,33 @@ public class ViewTripsAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_group,null);
         }
-        TextView tv = (TextView)convertView.findViewById(R.id.groupTV);
-        tv.setText(key+"("+childrenCount+")");
-        tv.setTypeface(null,Typeface.BOLD);
+        TextView tvHeader = (TextView)convertView.findViewById(R.id.groupHeader);
+        tvHeader.setText(key);
+
+        TextView countTv = (TextView)convertView.findViewById(R.id.counttv);
+        countTv.setText("Number of Trips: " + childrenCount);
         return convertView;
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        Trip childrenTrip = (Trip)getChild(groupPosition,childPosition);
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        final Trip childrenTrip = (Trip)getChild(groupPosition,childPosition);
         if(convertView==null)
         {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_item,null);
+            convertView = layoutInflater.inflate(R.layout.list_item_row,null);
         }
-        TextView tv = (TextView)convertView.findViewById(R.id.itemTV);
-        tv.setText("Distance: "+childrenTrip.distance+" Time: "+childrenTrip.time);
-        tv.setTypeface(Typeface.DEFAULT);
+        TextView starttv = (TextView)convertView.findViewById(R.id.startTV);
+        starttv.setText("Start: "+ SimpleDateFormat.getDateTimeInstance().format(new Date(childrenTrip.startTime)).substring(13));
+
+        TextView endtv = (TextView)convertView.findViewById(R.id.endTV);
+        endtv.setText("End:   "+ SimpleDateFormat.getDateTimeInstance().format(new Date(childrenTrip.endTime)).substring(13));
+
+        TextView timeTV = (TextView)convertView.findViewById(R.id.timeTV);
+        timeTV.setText("Time: "+childrenTrip.timeSpent+" minute");
+
+        TextView disTV = (TextView)convertView.findViewById(R.id.distancetv);
+        disTV.setText("Distance: "+childrenTrip.distanceTravelled+" meter");
         return convertView;
     }
 

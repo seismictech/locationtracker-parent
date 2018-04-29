@@ -40,6 +40,7 @@ public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private String FIREBASE_CLOUD_FUNCTION_URL =
             "https://us-central1-locationtracker-69235.cloudfunctions.net/storeLatLong";
+    private String userId;
     @Override
     public IBinder onBind(Intent intent)
     {
@@ -58,6 +59,7 @@ public class LocationService extends Service {
         }
         gpsTracker = GPSTracker.getInstance(getApplicationContext());
         database = FirebaseDatabase.getInstance().getReference();
+        userId = MySQLiteHelper.getInstance(getApplicationContext()).getUserId();
         mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, NOTIFY_INTERVAL);
     }
     @Override
@@ -80,8 +82,7 @@ public class LocationService extends Service {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     MySQLiteHelper.getInstance(getApplicationContext()).addLocations(latitude,longitude);
-                    addLocation(latitude,longitude,MySQLiteHelper.getInstance(getApplicationContext()).getUserId());
-                    //Toast.makeText(getApplicationContext(), latitude+"::"+longitude,Toast.LENGTH_SHORT).show();
+                    addLocation(latitude,longitude,userId);
                     //sendLatLongToServer(latitude,longitude);
                     Intent intent = new Intent(ACTION_LOCATION_BROADCAST);
                     intent.putExtra(LATITUDE, location.getLatitude());
@@ -98,13 +99,25 @@ public class LocationService extends Service {
             result.put("name", name);
             return result;
         }
+        private Map<String,Object> locToMap(double latitude, double longitude)
+        {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("latlong", latitude+","+longitude);
+            return result;
+        }
         private void addLocation(double latitude, double longitude, String name)
         {
-            String key = database.child("locations").push().getKey();
-            Map<String, Object> postValues = locToMap(latitude,longitude,name);
+            String key1 = database.child("locations").push().getKey();
+            Map<String, Object> postValues1 = locToMap(latitude,longitude,name);
             Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put("/locations/" + key, postValues);
+            childUpdates.put("/locations/" + key1, postValues1);
+
+            String key2 = name;
+            Map<String, Object> postValues2 = locToMap(latitude,longitude);
+            childUpdates.put("/livelocations/"+key2,postValues2);
+
             database.updateChildren(childUpdates);
+
         }
         private void sendLatLongToServer(double latitude,double longitude)
         {
